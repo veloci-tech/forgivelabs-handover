@@ -1,0 +1,36 @@
+# Flutter
+app/build/
+app/.dart_tool/
+app/.packages
+app/.pub-cache/
+app/.pub/
+app/ios/Pods/
+app/android/.gradle/
+app/android/app/build/
+*.iml
+*.log
+
+# Python
+functions/venv/
+functions/__pycache__/
+functions/**/__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+.env.local
+*.local
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store

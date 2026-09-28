@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Mercy Voice AI</title>
+  <meta name="description" content="Compassionate AI-powered healthcare voice assistant">
+  <meta name="theme-color" content="#2196A3">
+
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // Flutter web service worker
+    var serviceWorkerVersion = null;
+    var scriptLoaded = false;
+
+    function loadMainDartJs() {
+      if (scriptLoaded) return;
+      scriptLoaded = true;
+      var scriptTag = document.createElement('script');
+      scriptTag.src = 'main.dart.js';
+      scriptTag.type = 'application/javascript';
+      document.body.append(scriptTag);
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+        navigator.serviceWorker.register(serviceWorkerUrl).then(function (reg) {
+          function waitForActivation(serviceWorker) {
+            serviceWorker.addEventListener('statechange', function () {
+              if (serviceWorker.state === 'activated') {
+                console.log('Service worker activated.');
+                loadMainDartJs();
+              }
+            });
+          }
+
+          if (!reg.active && (reg.installing || reg.waiting)) {
+            waitForActivation(reg.installing || reg.waiting);
+          } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+            reg.update();
+            waitForActivation(reg.installing);
+          } else {
+            loadMainDartJs();
+          }
+        });
+
+        setTimeout(function () {
+          loadMainDartJs();
+        }, 4000);
+      });
+    } else {
+      loadMainDartJs();
+    }
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f5f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #2196A3;
+    }
+
+    .loading p {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #607D8B;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2196A3" stroke-width="2">
+      <path d="M12 2a10 10 0 1 0 10 10" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+      </path>
+    </svg>
+    <p>Loading Mercy Voice AI...</p>
+  </div>
+</body>
+</html>
